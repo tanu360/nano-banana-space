@@ -1,0 +1,785 @@
+/* Creating a more modern looking UI for the Gemini Image Editing App */
+/* Global Styles */
+:root {
+   --primary-color: oklch(0 0 0);
+   --primary-light: oklch(0.4400 0 0);
+   --primary-dark: oklch(0 0 0);
+   --secondary-color: oklch(0.9400 0 0);
+   --accent-color: oklch(0.9400 0 0);
+   --text-color: oklch(0 0 0);
+   --text-light: oklch(0.4400 0 0);
+   --bg-color: oklch(0.9900 0 0);
+   --card-bg: #FFFBF9;
+   --border-color: oklch(0.9200 0 0);
+   --transition: all 0.3s ease;
+   --radius: 0.5rem;
+}
+
+/* UNIVERSAL shadow removal - Pattern-based approach */
+*,
+*::before,
+*::after,
+html *,
+body *,
+[class*="gradio"],
+[class*="gradio"] *,
+[class*="block"],
+[class*="block"] *,
+[class*="icon-button"],
+[class*="icon-button"] *,
+[class*="svelte-"],
+[class*="svelte-"] *,
+[class*="gr-"],
+[class*="gr-"] *,
+[data-testid],
+[data-testid] * {
+   box-shadow: none !important;
+   -webkit-box-shadow: none !important;
+   -moz-box-shadow: none !important;
+   text-shadow: none !important;
+   filter: none !important;
+}
+
+/* Override CSS variables that control shadows */
+:root,
+.dark {
+   --block-shadow: none !important;
+   --shadow-drop: none !important;
+   --shadow-inset: none !important;
+   --shadow-spread: none !important;
+   --button-shadow-active: none !important;
+   --button-shadow: none !important;
+}
+
+/* Pattern-based class overrides */
+[class*="gradio"][class*="container"] {
+   box-shadow: none !important;
+}
+
+[class*="block"][class*="svelte"] {
+   box-shadow: none !important;
+}
+
+[class*="icon"][class*="button"][class*="svelte"] {
+   box-shadow: none !important;
+}
+
+/* Dark mode support */
+.dark {
+   --text-color: oklch(1 0 0);
+   --text-light: oklch(0.7200 0 0);
+   --bg-color: oklch(0 0 0);
+   --card-bg: oklch(0.1400 0 0);
+   --border-color: oklch(0.2600 0 0);
+   --primary-color: oklch(1 0 0);
+   --primary-light: oklch(0.7200 0 0);
+   --primary-dark: oklch(1 0 0);
+   --secondary-color: oklch(0.2500 0 0);
+   --accent-color: oklch(0.3200 0 0);
+}
+
+/* Base container styling - Optimized for HuggingFace Spaces */
+.gradio-container {
+   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+   background-color: var(--bg-color);
+   color: var(--text-color);
+   width: 100% !important;
+   max-width: 100% !important;
+   margin: 0 !important;
+   padding: 1.5rem;
+   border-radius: var(--radius);
+   box-sizing: border-box;
+   box-shadow: none !important;
+}
+
+/* Full-width layout (Hugging Face friendly) */
+#gradio-app,
+.root {
+   width: 100% !important;
+   max-width: 100% !important;
+}
+
+.gr-row,
+.gr-column,
+.gr-block,
+.gr-panel,
+.gr-form {
+   max-width: 100% !important;
+}
+
+/* Make the main content span full width with responsive columns */
+.main-content {
+   display: grid !important;
+   grid-template-columns: 1fr 1fr;
+   gap: 1rem;
+}
+
+.input-column,
+.output-column {
+   min-width: 0 !important;
+}
+
+@media (max-width: 960px) {
+   .main-content {
+      grid-template-columns: 1fr !important;
+   }
+}
+
+/* Header styling */
+.header-container {
+   background: var(--card-bg);
+   border: 1px solid var(--border-color);
+   border-radius: var(--radius);
+   padding: 2rem;
+   margin-bottom: 2rem;
+   color: var(--text-color);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 20px;
+}
+
+.header-container img {
+   width: 100px;
+   height: 100px;
+   transition: var(--transition);
+}
+
+.header-container img:hover {
+   transform: scale(1.05) rotate(5deg);
+}
+
+.header-container h1 {
+   font-size: 2.5rem;
+   font-weight: 700;
+   margin-bottom: 0.5rem;
+   color: var(--text-color);
+   display: inline-block;
+}
+
+.header-container a {
+   color: var(--primary-color);
+   text-decoration: none;
+   font-weight: 600;
+   border-bottom: 2px solid var(--border-color);
+   transition: var(--transition);
+   padding-bottom: 2px;
+}
+
+.header-container a:hover {
+   border-color: var(--primary-color);
+}
+
+/* Accordion styling - Vercel style */
+.gr-accordion {
+   border: 1px solid var(--border-color) !important;
+   background: var(--card-bg) !important;
+   border-radius: var(--radius);
+   overflow: hidden;
+   transition: var(--transition);
+}
+
+/* API Configuration accordion with chart-1 color */
+.config-accordion {
+   border: 1px solid oklch(0.8100 0.1700 75.3500) !important;
+   background: var(--card-bg) !important;
+   border-radius: var(--radius);
+   overflow: hidden;
+   transition: var(--transition);
+}
+
+/* Usage Instructions accordion */
+.instructions-accordion {
+   border: 1px solid var(--border-color) !important;
+   background: var(--card-bg) !important;
+   border-radius: var(--radius);
+   overflow: hidden;
+   margin-bottom: 0.75rem;
+   transition: var(--transition);
+}
+
+.gr-accordion:hover {
+   border-color: var(--primary-light);
+}
+
+.config-accordion:hover {
+   border-color: oklch(0.7500 0.1700 75.3500);
+}
+
+.instructions-accordion:hover {
+   border-color: var(--primary-light);
+}
+
+.gr-accordion-title,
+.config-accordion .gr-accordion-title,
+.instructions-accordion .gr-accordion-title {
+   background-color: var(--card-bg) !important;
+   color: var(--text-color) !important;
+   border-bottom: 1px solid var(--border-color);
+   padding: 1rem 1.5rem;
+   font-weight: 600;
+   cursor: pointer;
+   font-size: 0.95rem;
+}
+
+/* Accordion content styling */
+.gr-accordion .gr-markdown,
+.config-accordion .gr-markdown,
+.instructions-accordion .gr-markdown {
+   background-color: var(--card-bg) !important;
+   color: var(--text-color) !important;
+   padding: 1.5rem;
+}
+
+/* Style markdown content inside accordions */
+.gr-accordion .gr-markdown h3 {
+   color: var(--text-color) !important;
+   margin-top: 0;
+   font-size: 1.1rem;
+   font-weight: 600;
+}
+
+.gr-accordion .gr-markdown strong {
+   color: var(--text-color) !important;
+   font-weight: 600;
+}
+
+.gr-accordion .gr-markdown a {
+   color: var(--primary-color) !important;
+   text-decoration: underline;
+}
+
+.gr-accordion .gr-markdown a:hover {
+   color: var(--primary-light) !important;
+}
+
+
+/* Input fields */
+.prompt-input,
+.api-key-input {
+   width: 100%;
+   padding: 0.75rem 1rem;
+   border: 1px solid var(--border-color);
+   border-radius: var(--radius);
+   background-color: var(--card-bg);
+   transition: var(--transition);
+   font-size: 1rem;
+   color: var(--text-color);
+}
+
+.prompt-input:focus,
+.api-key-input:focus {
+   border-color: var(--primary-color);
+   outline: 2px solid var(--primary-color);
+   outline-offset: 2px;
+}
+
+.gr-form .gr-form-label {
+   font-weight: 600;
+   color: var(--text-color);
+   margin-bottom: 0.5rem;
+}
+
+/* Generate button styling */
+.gr-button.gr-button-primary,
+button.generate-btn,
+#component-54>div.svelte-1pf7t34>div>button {
+   background: var(--primary-color) !important;
+   color: var(--card-bg) !important;
+   border: 1px solid var(--primary-color) !important;
+   border-radius: var(--radius) !important;
+   padding: 0.75rem 1.5rem !important;
+   font-size: 1rem !important;
+   font-weight: 600 !important;
+   cursor: pointer !important;
+   transition: var(--transition) !important;
+   width: 100% !important;
+   text-transform: uppercase !important;
+   letter-spacing: 1px !important;
+}
+
+.gr-button.gr-button-primary:hover,
+button.generate-btn:hover,
+#component-54>div.svelte-1pf7t34>div>button:hover {
+   background: var(--secondary-color) !important;
+   color: var(--text-color) !important;
+}
+
+.gr-button.gr-button-primary:active,
+button.generate-btn:active,
+#component-54>div.svelte-1pf7t34>div>button:active {
+   background: var(--primary-dark) !important;
+}
+
+/* Force Generated Outputs gallery to use Vercel colors */
+.output-gallery,
+.output-gallery *,
+[data-testid="gallery"].output-gallery {
+   background-color: var(--card-bg) !important;
+   border: 1px solid var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+
+/* Override Gradio default colors with Vercel theme */
+.gr-block,
+.gr-form,
+.gr-panel,
+.gr-box,
+.gr-padded {
+   background-color: var(--card-bg) !important;
+   border-color: var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+/* File input components - Force Vercel colors */
+.gr-file,
+.gr-upload,
+.gr-file>*,
+.gr-upload>*,
+[data-testid="file"],
+[data-testid="upload"],
+#image-input,
+.upload-box {
+   background-color: var(--card-bg) !important;
+   border-color: var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+/* Target the file upload drop zone specifically */
+#image-input .file-drop-zone,
+#image-input .upload-container,
+#image-input .gr-file,
+.upload-box .file-drop-zone,
+.upload-box .upload-container,
+.upload-box .gr-file {
+   background-color: var(--card-bg) !important;
+   border-color: var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+.gr-file .file-name,
+.gr-file .file-size {
+   background-color: var(--card-bg) !important;
+   color: var(--text-color) !important;
+}
+
+/* Gallery components - Force Vercel colors */
+.gr-gallery,
+.gr-gallery>*,
+.gr-gallery .gallery-item,
+[data-testid="gallery"],
+.uploaded-gallery,
+.uploaded-gallery>*,
+.uploaded-gallery .gallery-item {
+   background-color: var(--card-bg) !important;
+   border-color: var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+/* Target gallery container and content specifically */
+.uploaded-gallery .gr-gallery,
+.uploaded-gallery .gallery-container,
+.uploaded-gallery .gallery-content,
+.gr-gallery .gallery-container,
+.gr-gallery .gallery-content {
+   background-color: var(--card-bg) !important;
+   border-color: var(--border-color) !important;
+}
+
+.uploaded-gallery .gr-button,
+.uploaded-gallery button {
+   background-color: transparent !important;
+   color: var(--text-color) !important;
+   border: none !important;
+}
+
+/* Input components - Force Vercel colors */
+.gr-input,
+.gr-textarea,
+.gr-textbox,
+.gr-textbox input,
+.gr-textbox textarea,
+.api-key-input,
+.prompt-input,
+.api-key-input input,
+.prompt-input textarea {
+   background-color: var(--card-bg) !important;
+   border: 1px solid var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+/* Target specific input elements */
+input[type="text"],
+input[type="password"],
+textarea {
+   background-color: var(--card-bg) !important;
+   border: 1px solid var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+/* Button components */
+.gr-button {
+   background-color: var(--primary-color) !important;
+   color: var(--card-bg) !important;
+   border-color: var(--primary-color) !important;
+}
+
+.gr-button:hover {
+   background-color: var(--secondary-color) !important;
+   color: var(--text-color) !important;
+}
+
+/* Image Preview Modal - Vercel Style */
+.gr-modal,
+.gr-overlay,
+[data-testid="modal"] {
+   background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.gr-modal-content,
+.gr-modal-dialog {
+   background-color: var(--card-bg) !important;
+   border: 1px solid var(--border-color) !important;
+   border-radius: var(--radius) !important;
+   padding: 1rem !important;
+   max-width: 90vw !important;
+   max-height: 90vh !important;
+}
+
+/* Preview image styling */
+.gr-modal img {
+   border-radius: calc(var(--radius) - 2px) !important;
+   max-width: 100% !important;
+   height: auto !important;
+   object-fit: contain !important;
+}
+
+/* Modal header and controls */
+.gr-modal-header {
+   background-color: var(--card-bg) !important;
+   border-bottom: 1px solid var(--border-color) !important;
+   padding: 0.75rem 1rem !important;
+   border-radius: var(--radius) var(--radius) 0 0 !important;
+}
+
+/* Modal buttons (download, fullscreen, close) */
+.gr-modal button,
+.gr-modal .gr-button {
+   background-color: var(--secondary-color) !important;
+   color: var(--text-color) !important;
+   border: 1px solid var(--border-color) !important;
+   border-radius: calc(var(--radius) - 2px) !important;
+   padding: 0.5rem 0.75rem !important;
+   font-size: 0.875rem !important;
+   transition: var(--transition) !important;
+}
+
+.gr-modal button:hover,
+.gr-modal .gr-button:hover {
+   background-color: var(--primary-light) !important;
+   color: var(--card-bg) !important;
+}
+
+/* Image thumbnails in modal */
+.gr-modal .thumbnails {
+   display: flex !important;
+   gap: 0.5rem !important;
+   padding: 1rem 0 !important;
+   justify-content: center !important;
+}
+
+.gr-modal .thumbnail {
+   width: 60px !important;
+   height: 60px !important;
+   border-radius: calc(var(--radius) - 2px) !important;
+   border: 2px solid var(--border-color) !important;
+   cursor: pointer !important;
+   transition: var(--transition) !important;
+}
+
+.gr-modal .thumbnail:hover,
+.gr-modal .thumbnail.active {
+   border-color: var(--primary-color) !important;
+}
+
+/* Force ALL file and gallery components to use Vercel colors */
+.gr-file,
+.gr-upload,
+.gr-gallery,
+.gr-file-upload,
+.upload-box,
+.uploaded-gallery,
+#image-input,
+[data-testid="file"],
+[data-testid="gallery"],
+[data-testid="upload"],
+.input-column .gr-file,
+.input-column .gr-gallery,
+.input-column [data-testid="file"],
+.input-column [data-testid="gallery"],
+.output-column .gr-gallery,
+.output-column [data-testid="gallery"] {
+   background-color: var(--card-bg) !important;
+   border: 1px solid var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+/* Target all nested elements inside file and gallery components */
+.gr-file *,
+.gr-upload *,
+.gr-gallery *,
+.uploaded-gallery * {
+   background-color: var(--card-bg) !important;
+   color: var(--text-color) !important;
+}
+
+/* Override any dark container backgrounds */
+.gr-container,
+.gr-column,
+.gr-row {
+   background-color: transparent !important;
+}
+
+/* Force file upload area specifically */
+.gr-file .file-upload-area,
+.gr-file .drop-zone,
+#image-input .file-upload-area,
+#image-input .drop-zone {
+   background-color: var(--card-bg) !important;
+   border: 2px dashed var(--border-color) !important;
+   color: var(--text-color) !important;
+}
+
+.output-gallery img {
+   border-radius: calc(var(--radius) - 4px);
+   transition: var(--transition);
+   object-fit: contain !important;
+   max-height: 100% !important;
+   max-width: 100% !important;
+}
+
+.output-gallery img:hover {
+   transform: scale(1.02);
+}
+
+/* Output text area */
+.output-text {
+   background-color: var(--card-bg);
+   border: 1px solid var(--border-color);
+   border-radius: var(--radius);
+   padding: 1.5rem;
+   line-height: 1.6;
+   min-height: 100px;
+   color: var(--text-color);
+}
+
+/* Examples section - Fixed for dark mode */
+.gr-examples-header {
+   font-weight: 600 !important;
+   margin: 2rem 0 1rem !important;
+   padding-bottom: 0.5rem !important;
+   /* Removed border-bottom to avoid duplicate lines */
+   color: var(--primary-light) !important;
+   font-size: 1.5rem !important;
+   display: block !important;
+   visibility: visible !important;
+}
+
+/* Handling duplicate lines coming up below the examples header */
+.gradio-container hr {
+   display: none !important;
+}
+
+/* Fix horizontal separator styling if needed */
+.gradio-container hr:first-of-type {
+   display: block !important;
+   border-top: 2px solid var(--primary-light) !important;
+   margin: 1rem 0 2rem 0 !important;
+}
+
+/* Fix dark mode examples grid */
+.gr-examples {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+   gap: 1rem;
+   margin-top: 1.5rem;
+}
+
+/* Fix dark mode examples background */
+.gr-sample {
+   background-color: var(--card-bg) !important;
+   border: 1px solid var(--border-color);
+   border-radius: var(--radius);
+   overflow: hidden;
+   transition: var(--transition);
+   cursor: pointer;
+}
+
+.gr-sample:hover {
+   border-color: var(--primary-light);
+}
+
+.gr-sample img {
+   width: 100%;
+   height: 150px;
+   object-fit: cover;
+}
+
+/* Examples table styling fixes for dark mode */
+table {
+   background-color: transparent !important;
+   color: var(--text-color) !important;
+}
+
+table tr {
+   background-color: var(--card-bg) !important;
+   color: var(--text-color) !important;
+}
+
+table td {
+   background-color: var(--card-bg) !important;
+   color: var(--text-color) !important;
+   border-color: var(--border-color) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+   .gradio-container {
+      padding: 1rem;
+
+   }
+
+   .header-container {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem;
+   }
+
+   .header-container h1 {
+      font-size: 2rem;
+   }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+   width: 8px;
+   height: 8px;
+}
+
+::-webkit-scrollbar-track {
+   background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+   background: var(--primary-light);
+   border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+   background: var(--primary-color);
+}
+
+/* Ensure proper viewport handling for mobile */
+@media screen and (max-width: 767px) {
+
+   body,
+   html {
+      overflow-x: hidden !important;
+      width: 100vw !important;
+      max-width: 100% !important;
+   }
+
+   /* Force central alignment for the entire app container */
+   .gradio-container {
+      box-shadow: none !important;
+      padding: 1rem !important;
+      margin: 0 auto !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      left: 0 !important;
+      right: 0 !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+   }
+
+   /* Fix header container on mobile */
+   .header-container {
+      flex-direction: column !important;
+      text-align: center !important;
+      padding: 1rem !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+   }
+
+   /* Ensure all content blocks are properly centered */
+   .main-content,
+   .input-column,
+   .output-column,
+   .gr-form,
+   .gr-panel,
+   .gr-box,
+   .gr-input,
+   .gr-text-input,
+   .output-gallery,
+   .gr-button,
+   #component-54>div.svelte-1pf7t34>div>button {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      box-sizing: border-box !important;
+   }
+
+
+   /* Fix examples area */
+   .gr-examples {
+      grid-template-columns: 1fr !important;
+      width: 100% !important;
+   }
+
+   /* Fix example tables on mobile */
+   table {
+      table-layout: fixed !important;
+      width: 100% !important;
+   }
+
+   table td {
+      word-break: break-word !important;
+   }
+}
+
+/* Fix for extreme narrow screens (small Android phones) */
+@media screen and (max-width: 380px) {
+   .header-container h1 {
+      font-size: 1.8rem !important;
+   }
+
+   .header-container p {
+      font-size: 0.9rem !important;
+   }
+
+   /* Stack everything vertically */
+   .gr-panel {
+      display: flex !important;
+      flex-direction: column !important;
+   }
+}
+
+/* Custom fix for the container to always stay centered on any device */
+#gradio-app {
+   display: flex !important;
+   justify-content: center !important;
+   width: 100% !important;
+   max-width: 100% !important;
+   margin: 0 auto !important;
+   overflow-x: hidden !important;
+}
+
+/* Ensure the root container doesn't cause horizontal scroll */
+.root {
+   max-width: 100% !important;
+   overflow-x: hidden !important;
+}
