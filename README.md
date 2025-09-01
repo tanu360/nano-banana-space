@@ -1,6 +1,6 @@
 ---
-title: Nano-Banana-Editor
-emoji: 📚
+title: Gemini-Image-Editor
+emoji: 📷
 colorFrom: indigo
 colorTo: blue
 sdk: gradio

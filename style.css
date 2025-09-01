@@ -328,11 +328,12 @@ body *,
 /* Generate button styling */
 .gr-button.gr-button-primary,
 button.generate-btn {
-   background: var(--primary-color) !important;
-   color: var(--card-bg) !important;
-   border: 1px solid var(--primary-color) !important;
+   /* chart-1 color */
+   background: oklch(0.8100 0.1700 75.3500) !important;
+   color: var(--bg-color) !important;
+   border: 1px solid oklch(0.8100 0.1700 75.3500) !important;
    border-radius: var(--radius) !important;
-   padding: 0.75rem 1.5rem !important;
+   padding: 1.09rem !important;
    font-size: 1rem !important;
    font-weight: 600 !important;
    cursor: pointer !important;
@@ -344,13 +345,15 @@ button.generate-btn {
 
 .gr-button.gr-button-primary:hover,
 button.generate-btn:hover {
-   background: var(--secondary-color) !important;
-   color: var(--text-color) !important;
+   /* only color change + text pop */
+   background: oklch(0.7500 0.1700 75.3500) !important;
+   color: var(--bg-color) !important;
+   font-size: 1.05rem !important;
 }
 
 .gr-button.gr-button-primary:active,
 button.generate-btn:active {
-   background: var(--primary-dark) !important;
+   background: oklch(0.7000 0.1700 75.3500) !important;
 }
 
 /* Force Generated Outputs gallery to use Vercel colors */
