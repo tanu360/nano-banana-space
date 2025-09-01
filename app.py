@@ -26,7 +26,6 @@ def generate(text, images, api_key, model="gemini-2.5-flash-image-preview"):
 
     text_response = ""
     image_path = None
-
     for part in response.candidates[0].content.parts:
         if part.text is not None:
             text_response += part.text + "\n"
@@ -106,14 +105,11 @@ with gr.Blocks(
         """
     <div class="header-container">
       <div>
-          <img src="https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png" alt="Gemini logo">
+          <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg" alt="Gemini logo">
       </div>
       <div>
-          <h1>Gemini for Image Editing</h1>
-          <p>Powered by <a href="https://gradio.app/">Gradio</a>⚡️| 
-          |
-          <a href="https://aistudio.google.com/apikey">Get an API Key</a> | 
-          : <a href="https://https://huggingface.co/tanu360">Ameerazam18</a></p>
+          <h1>Gemini Image Editing App</h1>
+          <p>Powered by Nano-Banana</p>
       </div>
     </div>
     """
@@ -147,12 +143,12 @@ with gr.Blocks(
                 elem_classes="api-key-input",
             )
             prompt_input = gr.Textbox(
-                lines=6,
+                lines=8,
                 placeholder="Enter prompt here...",
                 label="Prompt",
                 elem_classes="prompt-input",
             )
-            submit_btn = gr.Button("Generate", elem_classes="generate-btn")
+            submit_btn = gr.Button("Start Image Editing", elem_classes="generate-btn")
 
         with gr.Column(elem_classes="output-column"):
             uploaded_gallery = gr.Gallery(
@@ -163,6 +159,7 @@ with gr.Blocks(
             )
             output_text = gr.Textbox(
                 label="Gemini Output",
+                lines=3,
                 placeholder="Text response will appear here if no image is generated.",
                 elem_classes="output-text",
             )
